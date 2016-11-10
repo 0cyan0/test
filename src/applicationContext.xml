@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">  
+  
+    <!-- 定义数据源的信息 -->  
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"  
+        destroy-method="close">  
+        <property name="driverClass">  
+            <value>com.mysql.jdbc.Driver</value>  
+        </property>  
+        <property name="jdbcUrl">  
+            <value>jdbc:mysql://localhost:3306/web</value>  
+        </property>  
+        <property name="user">  
+            <value>root</value>  
+        </property>  
+        <property name="password">  
+            <value>admin</value>  
+        </property>  
+        <property name="maxPoolSize">  
+            <value>80</value>  
+        </property>  
+        <property name="minPoolSize">  
+            <value>1</value>  
+        </property>  
+        <property name="initialPoolSize">  
+            <value>1</value>  
+        </property>  
+        <property name="maxIdleTime">  
+            <value>20</value>  
+        </property>  
+    </bean>  
+  
+    <!--定义Hibernate的SessionFactory -->  
+    <!-- SessionFactory使用的数据源为上面的数据源 -->  
+    <!-- 指定了Hibernate的映射文件和配置信息 -->  
+    <bean id="sessionFactory"  
+        class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">  
+        <property name="dataSource">  
+            <ref local="dataSource" />  
+        </property>  
+        <property name="mappingResources">  
+            <list>  
+                <value>com/bean/Role.hbm.xml</value> 
+                <value>com/bean/Risk.hbm.xml</value> 
+            </list>  
+        </property>  
+        <property name="hibernateProperties">  
+            <props>  
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>  
+                <prop key="show_sql">true</prop>  
+                <prop key="hibernate.jdbc.batch_size">20</prop>  
+            </props>  
+        </property>  
+    </bean>  
+  
+    <bean id="transactionManager"  
+        class="org.springframework.orm.hibernate3.HibernateTransactionManager">  
+        <property name="sessionFactory" ref="sessionFactory" />  
+    </bean>  
+    
+    
+    <!--角色dao层 --> 
+    <bean id="baseRoleDao" class="com.dao.impl.RoleDao">
+        <property name="sessionFactory">  
+            <ref bean="sessionFactory" />  
+        </property>  
+    </bean> 
+    
+    
+    <!--风险dao层 --> 
+    <bean id="baseRiskDao" class="com.dao.impl.RiskDao">
+        <property name="sessionFactory">  
+            <ref bean="sessionFactory" />  
+        </property>  
+    </bean> 
+    
+    
+    <!--角色业务逻辑类 -->  
+    <bean id="roleManager" class="com.service.impl.RoleManagerImpl">  
+        <property name="dao">  
+            <ref bean="baseRoleDao" />  
+        </property>  
+    </bean>  
+    
+    
+    <!--风险业务逻辑类 -->  
+    <bean id="riskManager" class="com.service.impl.RiskManagerImpl">  
+        <property name="dao">  
+            <ref bean="baseRiskDao" />  
+        </property>  
+    </bean>  
+    
+    
+    <!-- 用户登录的Action2 -->  
+    <bean id="logAction2" class="com.action.LoginAction2">  
+        <property name="roleManager">  
+            <ref bean="roleManager" />  
+        </property>  
+    </bean> 
+    
+    
+    
+    <!-- 显示所有角色的Action -->  
+    <bean id="allRolesAction" class="com.action.AllRolesAction">  
+        <property name="roleManager">  
+            <ref bean="roleManager" />  
+        </property> 
+    </bean> 
+    
+    <!-- 添加角色的Action -->  
+    <bean id="addRoleAction" class="com.action.AddRoleAction">
+        <property name="roleManager">  
+            <ref bean="roleManager" />  
+        </property>   
+    </bean>
+    
+    <!-- 角色更新的Action -->  
+    <bean id="updateRoleAction" class="com.action.UpdateRoleAction">  
+        <property name="roleManager">  
+            <ref bean="roleManager" />  
+        </property>  
+    </bean> 
+    
+    <!-- 角色删除的Action -->  
+    <bean id="deleteRoleAction" class="com.action.DeleteRoleAction">  
+        <property name="roleManager">  
+            <ref bean="roleManager" />  
+        </property> 
+    </bean> 
+    
+    <!-- 显示所有风险的Action -->  
+    <bean id="allRisksAction" class="com.action.AllRisksAction">  
+        <property name="riskManager">  
+            <ref bean="riskManager" />  
+        </property> 
+    </bean> 
+    
+    <!-- 添加风险的Action -->  
+    <bean id="addRiskAction" class="com.action.AddRiskAction">
+        <property name="riskManager">  
+            <ref bean="riskManager" />  
+        </property>   
+    </bean>
+    
+    <!-- 风险更新的Action -->  
+    <bean id="updateRiskAction" class="com.action.UpdateRiskAction">  
+        <property name="riskManager">  
+            <ref bean="riskManager" />  
+        </property>  
+    </bean> 
+    
+    <!-- 风险分配的Action -->  
+    <bean id="distributeRiskAction" class="com.action.DistributeRiskAction">  
+        <property name="riskManager">  
+            <ref bean="riskManager" />  
+        </property>  
+    </bean> 
+    
+    <!-- 风险删除的Action -->  
+    <bean id="deleteRiskAction" class="com.action.DeleteRiskAction">  
+        <property name="riskManager">  
+            <ref bean="riskManager" />  
+        </property> 
+    </bean> 
+    
+    <!-- 显示员工风险的Action -->  
+    <bean id="staffRisksAction" class="com.action.StaffRisksAction">  
+        <property name="riskManager">  
+            <ref bean="riskManager" />  
+        </property> 
+    </bean> 
+    
+    <!-- 员工更新风险的Action -->  
+    <bean id="solveRiskAction" class="com.action.SolveRiskAction">  
+        <property name="riskManager">  
+            <ref bean="riskManager" />  
+        </property>  
+    </bean> 
+    
+    <!-- 登录注销 -->
+    <bean id="logoffAction" class="com.action.LoginoffAction">
+    </bean>
+    
+  
+</beans>  

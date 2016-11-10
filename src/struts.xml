@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <include file="struts-default.xml"/>
+    <package name="ljz" extends="struts-default">
+    
+        
+        <!--用户登录  -->
+        <action name="login2" class="logAction2">
+            <result name="admin" type="redirect">allRoles.action</result>
+            <result name="manager2" type="redirect">allRisks.action</result>
+            <result name="staff" type="redirect">staffRisks.action</result>
+            <result name="error">/fail.jsp</result>
+        </action>
+        
+        
+        
+        <!--管理员主页  -->
+        <action name="allRoles" class="allRolesAction">
+            <result name="success">/admin_index.jsp</result>
+            <result name="error">/fail.jsp</result>
+        </action>
+        
+        <!--管理员添加角色  -->
+        <action name="addRole" class="addRoleAction">
+            <result name="success" type="redirect">allRoles.action</result>
+            <result name="error">/fail.jsp</result>
+        </action>
+        
+        <!--管理员更新角色 -->
+        <action name="updateRole" class="updateRoleAction">
+            <result name="success" type="redirect">allRoles.action</result>
+            <result name="error">/fail.jsp</result>
+        </action>
+        
+        <!--管理员删除角色 -->
+        <action name="deleteRole" class="deleteRoleAction">
+            <result name="success" type="redirect">allRoles.action</result>
+            <result name="error">/fail.jsp</result>
+        </action>
+        
+        <!--经理主页  -->
+        <action name="allRisks" class="allRisksAction">
+            <result name="success">/manager_index.jsp</result>
+            <result name="error">/fail.jsp</result>
+        </action>
+        
+        <!--经理添加风险  -->
+        <action name="addRisk" class="addRiskAction">
+            <result name="success" type="redirect">allRisks.action</result>
+            <result name="error">/fail.jsp</result>
+        </action>
+        
+        <!--经理更新风险 -->
+        <action name="updateRisk" class="updateRiskAction">
+            <result name="success" type="redirect">allRisks.action</result>
+            <result name="error">/fail.jsp</result>
+        </action>
+        
+        <!--经理分配风险 -->
+        <action name="distributeRisk" class="distributeRiskAction">
+            <result name="success" type="redirect">allRisks.action</result>
+            <result name="error">/fail.jsp</result>
+        </action>
+        
+        <!--经理删除风险 -->
+        <action name="deleteRisk" class="deleteRiskAction">
+            <result name="success" type="redirect">allRisks.action</result>
+            <result name="error">/fail.jsp</result>
+        </action>
+        
+        <!--员工主页  -->
+        <action name="staffRisks" class="staffRisksAction">
+            <result name="success">/staff_index.jsp</result>
+            <result name="error">/fail.jsp</result>
+        </action>
+        
+        <!--员工更新风险 -->
+        <action name="solveRisk" class="solveRiskAction">
+            <result name="success" type="redirect">staffRisks.action</result>
+            <result name="error">/fail.jsp</result>
+        </action>
+        
+        <!--注销登录  -->
+        <action name="loginoff" class="logoffAction">
+            <result name="success">/login2.jsp</result>
+        </action>
+        
+    </package>
+
+    <!-- Add packages here -->
+
+</struts>
